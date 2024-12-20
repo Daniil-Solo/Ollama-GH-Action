@@ -18,6 +18,8 @@ jobs:
     - name: Install Ollama
       run: |
         curl -fsSL https://ollama.com/install.sh | bash
+        ollama serve
+        sleep 5
         ollama run codegemma:2b
       shell: bash
     - name: Review modified files
