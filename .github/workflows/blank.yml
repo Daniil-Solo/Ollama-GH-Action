@@ -1,0 +1,31 @@
+name: 'Code Review using Ollama'
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Ollama
+      run: |
+        curl -fsSL https://ollama.com/install.sh | bash
+        ollama run codegemma:2b
+      shell: bash
+    - name: Review modified files
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+         ollama_text=$(curl -s http://127.0.0.1:11434/api/generate -d '{"model": "codegemma:2b", "prompt": "Write the code on python for tree data structure", "stream": false}' | jq -r '.response')
+         ollama_comment="Ollama writes:\n\n$ollama_text"
+         echo "$ollama_comment" >> ollama_comment.txt
+         gh pr comment ${{ github.event.pull_request.number }} --body "$(cat ollama_comment.txt)"
+      shell: bash
