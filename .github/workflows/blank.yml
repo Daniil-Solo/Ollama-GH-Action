@@ -19,13 +19,13 @@ jobs:
       run: |
         curl -fsSL https://ollama.com/install.sh | bash
         sleep 5
-        ollama run codegemma:2b
+        ollama run llama3.1
       shell: bash
     - name: Review modified files
       env:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
-         ollama_text=$(curl -s http://127.0.0.1:11434/api/generate -d '{"model": "codegemma:2b", "prompt": "Write in Python the Car class with fields: mark, max speed and length", "stream": false}' | jq -r '.response')
+         ollama_text=$(curl -s http://127.0.0.1:11434/api/generate -d '{"model": "llama3.1", "prompt": "Write in Python the Car class with fields: mark, max speed and length", "stream": false}' | jq -r '.response')
          ollama_comment="Ollama writes:\n\n$ollama_text"
          echo "$ollama_comment" >> ollama_comment.txt
          #gh pr comment ${{ github.event.pull_request.number }} --body "$(cat ollama_comment.txt)"
