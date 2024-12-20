@@ -27,6 +27,6 @@ jobs:
       run: |
          ollama_text=$(curl -s http://127.0.0.1:11434/api/generate -d '{"model": "codegemma:2b", "prompt": "Write the code on python for tree data structure", "stream": false}' | jq -r '.response')
          ollama_comment="Ollama writes:\n\n$ollama_text"
-         echo "$ollama_comment" >> ollama_comment.txt
-         gh pr comment ${{ github.event.pull_request.number }} --body "$(cat ollama_comment.txt)"
+         echo "$ollama_comment"
+         #gh pr comment ${{ github.event.pull_request.number }} --body "$(cat ollama_comment.txt)"
       shell: bash
