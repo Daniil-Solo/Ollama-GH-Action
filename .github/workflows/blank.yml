@@ -15,16 +15,12 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v3
-
-    - name: Terer
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-      run: echo -e "${{ github.event.pull_request.body }}" | tr -d '\r' > pr_description.txt
-
+    
     - name: Get parent repository and PR description
       env:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
+        echo $(gh repo view "$REPO_URL" --json headRepository --jq '.headRepository')
         PR_URL=$(gh pr view ${{ github.event.pull_request.number }} --json url --jq '.url')
         REPO_URL=$(echo "$PR_URL" | sed 's|/pull/.*||') # remove pull request in url
         PARENT_REPO_URL=$(gh repo view "$REPO_URL" --json parent --jq '.parent')
