@@ -40,7 +40,8 @@ jobs:
         PULL_NUMBER: ${{ github.event.pull_request.number }}
       run: |
         python main.py
-        cat description.txt 
+        gh pr comment ${{ github.event.pull_request.number }} --body "$(cat description.txt)"
+        
     
     - name: Get parent repository and PR description
       env:
