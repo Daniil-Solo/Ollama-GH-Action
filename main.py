@@ -19,7 +19,7 @@ for file in pr.get_files():
     file_url = file.blob_url
     resp = requests.get(file_url)
     file_content = resp.text
-    new_comment = PullRequest.ReviewComment(path=file.filename, body=file_content)
+    new_comment = PullRequest.ReviewComment(path=file.filename, position=1, body=file_content)
     comments.append(new_comment)
 
 pr.create_review(last_commit, "New answer" + pr.body, "REQUEST_CHANGES", comments)
