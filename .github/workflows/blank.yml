@@ -32,7 +32,7 @@ jobs:
       run: |
         REPO_NAME=$(gh pr view ${{ github.event.pull_request.number }} --json headRepository --jq '.headRepository.name')
         REPO_OWNER_LOGIN=$(gh pr view ${{ github.event.pull_request.number }} --json headRepositoryOwner --jq '.headRepositoryOwner.login')
-        echo "REPO_NAME=${REPO_NAME}/${REPO_OWNER_LOGIN}" >> $GITHUB_ENV
+        echo "REPO_NAME=${REPO_OWNER_LOGIN}/${REPO_NAME}" >> $GITHUB_ENV
     
     - name: Load description
       env:
