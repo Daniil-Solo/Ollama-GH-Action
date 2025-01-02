@@ -12,11 +12,12 @@ pr = repo.get_pull(PULL_NUMBER)
 with open("description.txt", "w", encoding="utf-8") as f:
     f.write(pr.body)
 last_commit = pr.get_commits()[pr.commits - 1]
-comments = []
 
+comments = []
 for file in pr.get_files():
-    content = repo.get_contents(file.filename)
-    comment_text = "Code\n```\ncontent.content\n```"
+    with open(file.filename, "r", encoding="utf-8") as f:
+        content = f.read()
+    comment_text = f"Code\n```\n{content}\n```"
     new_comment = PullRequest.ReviewComment(path=file.filename, position=1, body=comment_text)
     comments.append(new_comment)
 
