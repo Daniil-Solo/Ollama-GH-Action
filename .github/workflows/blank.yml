@@ -20,12 +20,12 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
-        echo $(gh pr view ${{ github.event.pull_request.number }} --json url --jq '.url')
-        PR_URL = $(gh pr view ${{ github.event.pull_request.number }} --json url --jq '.url')
-        echo $PR_URL
-        REPO_URL = $(echo "$PR_URL" | sed 's|/pull/.*||')
+        PR_URL=$(gh pr view ${{ github.event.pull_request.number }} --json url --jq '.url')
+        echo "$PR_URL"
+        REPO_URL=$(echo "$PR_URL" | sed 's|/pull/.*||')
         echo $REPO_URL
-        echo $(gh repo view $REPO_URL --json parent --jq '.parent')
+        echo $(gh repo view "$REPO_URL" --json parent --jq '.parent')
+        PARENT_REPO_URL=$(gh repo view "$REPO_URL" --json parent --jq '.parent')
         PR_DESCRIPTION="${{ github.event.pull_request.body }}"
         echo ${{ github.event.pull_request.body }} 
         
