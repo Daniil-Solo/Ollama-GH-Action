@@ -21,13 +21,15 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
         PR_URL=$(gh pr view ${{ github.event.pull_request.number }} --json url --jq '.url')
-        echo "$PR_URL"
         REPO_URL=$(echo "$PR_URL" | sed 's|/pull/.*||')
-        echo $REPO_URL
-        echo $(gh repo view "$REPO_URL" --json parent --jq '.parent')
         PARENT_REPO_URL=$(gh repo view "$REPO_URL" --json parent --jq '.parent')
         PR_DESCRIPTION="${{ github.event.pull_request.body }}"
-        echo ${{ github.event.pull_request.body }} 
+
+        if [[ -z "$PARENT_REPO_URL" ]]; then
+            echo "Репозиторий-родитель не существует"
+        else
+            echo "$PARENT_REPO_URL"
+        fi
         
         echo "PARENT_REPO=${PARENT_REPO}" >> $GITHUB_ENV
         echo "PR_DESCRIPTION=${PR_DESCRIPTION}" >> $GITHUB_ENV
