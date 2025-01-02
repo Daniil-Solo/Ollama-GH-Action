@@ -13,12 +13,13 @@ with open("description.txt", "w", encoding="utf-8") as f:
     f.write(pr.body)
 last_commit = pr.get_commits()[pr.commits - 1]
 
-comments = []
-for file in pr.get_files():
-    with open(file.filename, "r", encoding="utf-8") as f:
-        content = f.read()
-    comment_text = f"Code\n```\n{content}\n```"
-    new_comment = PullRequest.ReviewComment(path=file.filename, position=1, body=comment_text)
-    comments.append(new_comment)
+# comments = []
+# for file in pr.get_files():
+#     with open(file.filename, "r", encoding="utf-8") as f:
+#         content = f.read()
+#     comment_text = f"Code\n```\n{content}\n```"
+#     new_comment = PullRequest.ReviewComment(path=file.filename, position=1, body=comment_text)
+#     comments.append(new_comment)
+# pr.create_review(last_commit, "New answer" + pr.body, "REQUEST_CHANGES", comments)
 
-pr.create_review(last_commit, "New answer" + pr.body, "REQUEST_CHANGES", comments)
+pr.create_issue_comment("New answer " + pr.body)
