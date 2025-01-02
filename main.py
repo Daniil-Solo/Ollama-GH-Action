@@ -1,5 +1,4 @@
 import os
-import requests
 from github import Github, PullRequest
 
 
@@ -16,10 +15,9 @@ last_commit = pr.get_commits()[pr.commits - 1]
 comments = []
 
 for file in pr.get_files():
-    file_url = file.blob_url
-    resp = requests.get(file_url)
-    file_content = resp.text
-    new_comment = PullRequest.ReviewComment(path=file.filename, position=1, body=file_content)
+    content = repo.get_contents(file.filename)
+    comment_text = "Code\n```\ncontent.content\n```"
+    new_comment = PullRequest.ReviewComment(path=file.filename, position=1, body=comment_text)
     comments.append(new_comment)
 
 pr.create_review(last_commit, "New answer" + pr.body, "REQUEST_CHANGES", comments)
