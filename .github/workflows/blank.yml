@@ -17,7 +17,8 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Get parent repository and PR description
-      id: get_info
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
       run: |
         PARENT_REPO=$(gh pr view ${{ github.event.pull_request.number }} --json base --jq '.base.repo.cloneUrl')
         PR_DESCRIPTION="${{ github.event.pull_request.body }}"
