@@ -23,10 +23,8 @@ jobs:
         PR_URL=$(gh pr view ${{ github.event.pull_request.number }} --json url --jq '.url')
         REPO_URL=$(echo "$PR_URL" | sed 's|/pull/.*||')
         PARENT_REPO_URL=$(gh repo view "$REPO_URL" --json parent --jq '.parent')
-        PR_DESCRIPTION="${{ github.event.pull_request.body }}"
-
-        echo -e "$PR_DESCRIPTION" > pr_description.txt
-
+        echo "${{ github.event.pull_request.body }}" | tr -d '\r' > pr_description.txt
+        
         if [[ -z "$PARENT_REPO_URL" ]]; then
             echo "Репозиторий задания не существует"
         else
