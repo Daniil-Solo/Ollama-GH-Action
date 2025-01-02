@@ -21,9 +21,9 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
         PR_URL=$(gh pr view ${{ github.event.pull_request.number }} --json url --jq '.url')
-        REPO_URL=$(echo "$PR_URL" | sed 's|/pull/.*||')
+        REPO_URL=$(echo "$PR_URL" | sed 's|/pull/.*||') # remove pull request in url
         PARENT_REPO_URL=$(gh repo view "$REPO_URL" --json parent --jq '.parent')
-        echo "${{ github.event.pull_request.body }}" | tr -d '\r' > pr_description.txt
+        echo -e "${{ github.event.pull_request.body }}" | tr -d '\r' > pr_description.txt
         
         if [[ -z "$PARENT_REPO_URL" ]]; then
             echo "Репозиторий задания не существует"
@@ -32,7 +32,8 @@ jobs:
         fi
         
         echo "PARENT_REPO=${PARENT_REPO}" >> $GITHUB_ENV
-
+      shell: bash
+      
     - name: Run Python script
       run: |
         cat pr_description.txt 
