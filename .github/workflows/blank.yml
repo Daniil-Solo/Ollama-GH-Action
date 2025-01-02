@@ -25,21 +25,20 @@ jobs:
         PARENT_REPO_URL=$(gh repo view "$REPO_URL" --json parent --jq '.parent')
         PR_DESCRIPTION="${{ github.event.pull_request.body }}"
 
-        echo $(gh repo view "$REPO_URL" --json owner --jq '.owner')
+        echo -e "$PR_DESCRIPTION" > pr_description.txt
 
         if [[ -z "$PARENT_REPO_URL" ]]; then
-            echo "Репозиторий-родитель не существует"
+            echo "Репозиторий задания не существует"
         else
-            echo "$PARENT_REPO_URL"
+            echo "Репозиторий задания: $PARENT_REPO_URL"
         fi
         
         echo "PARENT_REPO=${PARENT_REPO}" >> $GITHUB_ENV
-        echo "PR_DESCRIPTION=${PR_DESCRIPTION}" >> $GITHUB_ENV
 
     - name: Run Python script
       run: |
-        echo "${{ env.PARENT_REPO }}" 
-        echo "${{ env.PR_DESCRIPTION }}"
+        cat pr_description.txt 
+        echo "${{ env.PARENT_REPO }}"
 
     
     # - name: Install Ollama
