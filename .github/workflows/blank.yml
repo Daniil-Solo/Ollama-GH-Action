@@ -16,6 +16,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Terer
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: echo -e "${{ github.event.pull_request.body }}" | tr -d '\r' > pr_description.txt
+
     - name: Get parent repository and PR description
       env:
         GITHUB_TOKEN: ${{ github.token }}
