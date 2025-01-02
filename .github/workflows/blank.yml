@@ -27,6 +27,8 @@ jobs:
         pip install PyGithub
 
     - name: Install dependencies
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
       run: |
         REPO_NAME=$(gh pr view ${{ github.event.pull_request.number }} --json headRepository --jq '.headRepository.name')
         echo "REPO_NAME=${REPO_NAME}" >> $GITHUB_ENV
