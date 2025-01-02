@@ -25,6 +25,8 @@ jobs:
         PARENT_REPO_URL=$(gh repo view "$REPO_URL" --json parent --jq '.parent')
         PR_DESCRIPTION="${{ github.event.pull_request.body }}"
 
+        echo $(gh repo view "$REPO_URL" --json owner --jq '.owner')
+
         if [[ -z "$PARENT_REPO_URL" ]]; then
             echo "Репозиторий-родитель не существует"
         else
