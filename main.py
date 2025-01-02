@@ -11,4 +11,6 @@ repo = g.get_repo(REPO_NAME)  # Login/Repo
 pr = repo.get_pull(PULL_NUMBER)
 with open("description.txt", "w", encoding="utf-8") as f:
     f.write(pr.body)
-pr.create_comment("New answer" + pr.body)
+last_commit = pr.get_commits()[pr.commits - 1]
+for file in pr.get_files():
+    pr.create_comment("New answer" + pr.body, last_commit, file.filename, 0)
