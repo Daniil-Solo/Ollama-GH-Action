@@ -20,7 +20,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
-        echo $(gh repo view "$REPO_URL" --json headRepository --jq '.headRepository')
+        echo $(gh pr view ${{ github.event.pull_request.number }} --json headRepository --jq '.headRepository')
         PR_URL=$(gh pr view ${{ github.event.pull_request.number }} --json url --jq '.url')
         REPO_URL=$(echo "$PR_URL" | sed 's|/pull/.*||') # remove pull request in url
         PARENT_REPO_URL=$(gh repo view "$REPO_URL" --json parent --jq '.parent')
