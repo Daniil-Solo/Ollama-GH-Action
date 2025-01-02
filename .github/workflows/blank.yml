@@ -20,7 +20,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
-        echo $(gh pr view ${{ github.event.pull_request.number }})
+        echo $(gh pr view ${{ github.event.pull_request.number }} --json headRepository)
         PARENT_REPO=$(gh pr view ${{ github.event.pull_request.number }} --json base --jq '.base.repo.cloneUrl')
         PR_DESCRIPTION="${{ github.event.pull_request.body }}"
         
