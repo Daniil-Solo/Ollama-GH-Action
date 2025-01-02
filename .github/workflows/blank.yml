@@ -15,6 +15,25 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install PyGithub
+
+    - name: Install dependencies
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+        REPO_NAME: $(gh pr view ${{ github.event.pull_request.number }} --json headRepository --jq '.headRepository.name')
+        PULL_NUMBER: ${{ github.event.pull_request.number }}
+      run: |
+        python main.py
+        cat description.txt 
     
     - name: Get parent repository and PR description
       env:
